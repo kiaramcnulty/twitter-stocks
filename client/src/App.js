@@ -1,51 +1,74 @@
 import './App.css';
+import React, { useState, useEffect } from 'react';
+import 'rbx/index.css';
+import { Container, Title, Box, Media, Image, Content, Footer } from 'rbx';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { fab } from '@fortawesome/free-brands-svg-icons';
+import { faCheckSquare, faCoffee} from '@fortawesome/free-solid-svg-icons';
 
-let applData = []
-//TwitterClient.tweets.search(parameters)
+library.add(fab, faCheckSquare, faCoffee)
 
-// Search for Tweets within the past seven days
-// https://developer.twitter.com/en/docs/twitter-api/tweets/search/quick-start/recent-search
-fetch('http://localhost:8081/stocks')
-    .then(response => {
-      console.log("Hellooooo");
-      return response.json()})
-    .then(stocks => {
-      let i = 0;
-      while (i < stocks.data.length) {
-        console.log(stocks.data[i].text)
-        i++;
-      }
-    })
+const Banner = ({ title }) => (
+  <Title style = {{color: 'white', paddingTop:'40px', textAlign:"center"}}>{ title }</Title>
+);
 
-// const twitterClient = new TwitterClient({
-//   apiKey: 'EuIaLWJLgINKLb0DLVYpgonxb',
-//   apiSecret: 'nLZv1JWNEzPJomrPDPKfFWWvS60PPmLUA7fRdR36AicTnCQh9W',
-//   accessToken: '2390103912-5QOVKCvNF7JqY3u1OFGNmSpJhiDbL9m0qwhml7R',
-//   accessTokenSecret: 'DyyWnvYEKjQbEQno3uoESDHs0IXLz8wkMA8uZ61nTamwi',
-// });
+const TweetList = ({ tweets }) => (
+  <div>
+    {/* { courses.map(course => <TwitterTweetEmbed tweetId={parseInt(course.id)}/>) } */}
+    { tweets.map(tweet => <Tweet key={tweet.id} tweet={ tweet } />) }
+  </div>
+);
 
-// // Search for a user
-// async function requestData() {
-//   console.log("requesting data");
-//   const data = await twitterClient.accountsAndUsers.usersSearch({ q: 'twitterDev' });
-//   console.log(data);
-
-// }
-
-// requestData();
-
-
-
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
+// pass in
+const Tweet = ({ tweet }) => (
+  <Box style = {{backgroundColor: '#E8E8E8'}}>
+  <Media>
+    <Media.Item align="left">
+      <Image.Container size={64}>
+        <FontAwesomeIcon icon={["fab", "twitter-square"]} fontSize={'50px'} />
+      </Image.Container>
+    </Media.Item>
+    <Media.Item>
+      <Content>
         <p>
-          $AAPL
+          {tweet.text}
         </p>
-      </header>
-    </div>
-  );
-}
+      </Content>
+    </Media.Item>
+  </Media>
+</Box>
+);
+
+const App = () => {
+  const [stockList, setStockList] = useState({ data: [] });
+  const url = 'http://localhost:8081/stocks';
+
+  useEffect(() => {
+    const fetchStockList = async () => {
+      const response = await fetch(url);
+      if (!response.ok) throw response;
+      const json = await response.json();
+      setStockList(json);
+    }
+    fetchStockList();
+  }, [])
+
+  if (stockList.data) {
+    return (
+      <div style = {{backgroundColor: '#1DA1F2'}}>
+      <Container fluid>
+        <Banner title={ '$AAPL' }/>
+        <TweetList tweets={ stockList.data } />
+        <Footer style = {{backgroundColor: '#1DA1F2'}}></Footer>
+      </Container>
+      </div>
+
+    );
+  }
+  else {
+    return (<div>Loading...</div>);
+  }
+};
 
 export default App;
