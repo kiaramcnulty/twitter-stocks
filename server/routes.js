@@ -42,13 +42,30 @@ router.route("/stocks")
                 "authorization": `Bearer ${token}`
             }
         }).then(result => {
-            console.log("Here")
             console.log(result.data);
             res.status(200).send(result.data);
         })
-        // .catch(err => {
-        //     res.status(400).send("error");
-        // }) 
+    })
+
+router.route("/stocks/:id")
+    .get((req, res) => {
+        console.log("GET /stocks");
+
+        const params = {
+            'query': 'from:twitterdev -is:retweet',
+            'tweet.fields': 'author_id'
+        }
+
+        axios.get(endpointUrl + "?query="+req.params.id, {
+            headers: {
+                "User-Agent": "v2RecentSearchJS",
+                "authorization": `Bearer ${token}`
+            }
+        }).then(result => {
+            console.log("Here")
+            console.log(result.data);
+            res.status(200).send(result.data);
+        });
     })
 
 module.exports = router;
