@@ -12,7 +12,7 @@ const bodyConfig = {
 };
 app.use(express.urlencoded(bodyConfig));
 app.use(express.json(bodyConfig));
-app.use(express.static(path.resolve(__dirname, '/client/build')));
+app.use(express.static(path.resolve(__dirname, './client/build')));
 
 const middleware = require("./config/middleware");
 app.use(middleware.cors);
@@ -23,12 +23,12 @@ app.use("", routes);
 
 // Handle GET requests to /api route
 app.get("/api", (req, res) => {
-  res.json({ message: "Hello from server!" });
+  res.json({ message: `${__dirname}` });
 });
 
 // All other GET requests not handled before will return our React app
-app.get('*', (req, res) => {
-  res.sendFile(path.resolve(__dirname, '/client/build', 'index.html'));
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'client/build/index.html'));
 });
 
 const PORT = process.env.PORT || 8081;
