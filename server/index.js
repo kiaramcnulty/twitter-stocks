@@ -3,6 +3,7 @@
 const env = "" + process.env.NODE_ENV;
 
 const express = require("express");
+const path = require("path");
 const app = express();
 
 const bodyConfig = {
@@ -11,6 +12,7 @@ const bodyConfig = {
 };
 app.use(express.urlencoded(bodyConfig));
 app.use(express.json(bodyConfig));
+app.use(express.static(path.resolve(__dirname, '../client/build')));
 
 const middleware = require("./config/middleware");
 app.use(middleware.cors);
