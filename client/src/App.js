@@ -45,7 +45,7 @@ const App = () => {
   let stockTitle = 'AAPL';
   const [stockName, setStockName] = useState('AAPL');
   const [stockList, setStockList] = useState({ data: [] });
-  const url = 'http://https://twitter-stocks-website.herokuapp.com/stocks/'+stockName;
+  const url = 'https://twitter-stocks-website.herokuapp.com/stocks/'+stockName;
 
   useEffect(() => {
     const fetchStockList = async () => {
