@@ -3,7 +3,11 @@
 const env = "" + process.env.NODE_ENV;
 
 const express = require("express");
+<<<<<<< HEAD
 const path = require('path');
+=======
+const path = require("path");
+>>>>>>> heroku
 const app = express();
 
 // Have Node serve the files for our built React app
@@ -25,6 +29,7 @@ const bodyConfig = {
 };
 app.use(express.urlencoded(bodyConfig));
 app.use(express.json(bodyConfig));
+app.use(express.static(path.resolve(__dirname, '../client/build')));
 
 const middleware = require("./config/middleware");
 app.use(middleware.cors);
