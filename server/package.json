@@ -6,7 +6,7 @@
   "scripts": {
     "populate": "cross-env NODE_ENV=development node ./config/scripts/execPopulateDB.js",
     "test": "cross-env NODE_ENV=development mocha --exit",
-    "start": "node server/index.js",
+    "start": "node index.js",
     "build": "cd client && npm install && npm run build"
   },
   "author": "",
